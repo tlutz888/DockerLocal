@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import AppInfoModal from "../appInfo/AppInfoModal";
+import { Project } from "src/types/types";
 
 const SignIn: React.FC = () => {
   //initailize showModal to false
@@ -11,8 +12,8 @@ const SignIn: React.FC = () => {
     <div className="buttons">
       <button
         className="button is-primary"
-        onClick={(): void =>
-          window.location.replace("http://localhost:3001/auth/github")
+        onClick={async () =>
+          await window.location.replace("http://localhost:3001/auth/github")
         }
       >
         Sign In With Github

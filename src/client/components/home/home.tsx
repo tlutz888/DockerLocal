@@ -3,6 +3,7 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import Sidebar from "../sidebar/Sidebar";
 import AddRepos from "../addRepos/AddRepos";
 import ProjectPage from "../projects/ProjectPage";
+const CryptoJS = require('crypto-js');
 
 import { Project, Repo, User } from "../../../types/types";
 
@@ -18,9 +19,30 @@ const Home: React.FC<HomeProps> = ({ userInfo, setUserInfo }) => {
 
   const [activeProject, setActiveProject] = useState(1);
 
-  const Request1 = (): void => {
-    fetch('http://localhost:3001/')
-      .then(res => res.json())
+  const Request1 = async (): void => {
+    //PARSE TOKEN AND USERNAME FROM COOKIES
+    const nameAndToken = document.cookie.split(';');
+    const username = nameAndToken[0].replace('username=', '').trim();
+    const token = nameAndToken[1].replace('token=', '').trim();
+    const parsedToken = decodeURIComponent((token));
+
+    //DECRYPT TOKEN FROM COOKIES
+    const decryptedToken = await CryptoJS.AES.decrypt(parsedToken, 'super_secret').toString(CryptoJS.enc.Utf8);
+    const body = JSON.stringify({
+      username: username,
+      token: decryptedToken
+    })
+    console.log(username, token, ' decrypte', decryptedToken, body)
+    fetch('http://localhost:3001/api/repos', {
+      method: 'POST',
+      body: body,
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      }
+  
+    })
+      // .then(res => res.json())
       .then(res => console.log('success', res))
       .catch(err => console.log('fail', err))
   }

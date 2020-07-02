@@ -9,6 +9,15 @@ require("dotenv/config");
 const app = express();
 const cookieParser = require("cookie-parser");
 
+const apiController = require("./controllers/apiController");
+const authController = require("./controllers/authController");
+const gitController = require("./controllers/gitController");
+const sshKeyController = require("./controllers/sshKeyController");
+
+
+const cors = require('cors')
+app.use(cors())
+
 // Bring in routes
 const authRoute = require("../../src/server/routes/auth-route");
 const apiRoute = require("../../src/server/routes/api-route");
@@ -27,8 +36,15 @@ app.use("/api", apiRoute);
 app.use(express.static("assets"));
 
 // Home endpoint
-app.get("/", (req: Request, res: Response) =>
-  res.sendFile(path.resolve(__dirname, "../../src/index.html"))
+app.post("/write",   
+authController.getNameAndTokenFromCookies,
+apiController.getUserRepos,
+sshKeyController.createSSHkey,
+sshKeyController.addSSHkeyToGithub,
+gitController.cloneRepo,
+sshKeyController.deleteSSHkey,
+(req: Request, res: Response) => res.status(200).json(res.locals.repos)
+
 );
 
 // Handle redirections

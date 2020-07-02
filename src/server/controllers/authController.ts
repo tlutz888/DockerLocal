@@ -22,17 +22,20 @@ authController.saveAccessToken = (req: Request, res: Response, next: NextFunctio
 
 //Middleware to get username and access token from cookies and store each in locals
 authController.getNameAndTokenFromCookies = (req: Request, res: Response, next: NextFunction) => {
+  console.log('here')
+  console.log(req.body)
+  
   //Destructure username and token from cookies
-  const { username, token }: any = req.cookies;
+  // const { username, token }: any = req.cookies;
   
   //CryptoJS -> decrypt accessToken and convert back to original
-  const decrypted = CryptoJS.AES.decrypt(token, 'super_secret').toString(CryptoJS.enc.Utf8);
+  // const decrypted = CryptoJS.AES.decrypt(token, 'super_secret').toString(CryptoJS.enc.Utf8);
 
   //Store decrypted access token in locals
-  res.locals.accessToken = decrypted;
+  res.locals.accessToken = req.body.token;
 
   //Store username in locals
-  res.locals.username = username;
+  res.locals.username = req.body.username;
 
   return next();
 }
