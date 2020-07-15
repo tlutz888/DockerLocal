@@ -5,6 +5,14 @@ directory=$1
 
 cd /
 cd directory
+# remove temporary folders that store agent info and ssh keys, if they exist
+if [ -d './tmpKeys' ]
+then
+    rm -rf ./tmpKeys
+elif [ -d './tmpAgent' ]
+then
+    rm -rf ./tmpAgent
+fi
 
 # create temporary folders to store agent info and ssh keys
 mkdir tmpKeys
