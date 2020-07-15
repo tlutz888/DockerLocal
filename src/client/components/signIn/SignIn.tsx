@@ -13,7 +13,7 @@ const SignIn: React.FC = () => {
       <button
         className="button is-primary"
         onClick={(): void =>
-          window.location.replace(`${EXPRESS_URL}/auth/github`)
+          window.location.replace(`https://github.com/login/oauth/authorize?client_id=Iv1.68fc40433bac24c2&state=kCcLzYNcLNSTPMYavfG5`)
         }
       >
         Sign In With Github

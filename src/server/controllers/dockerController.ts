@@ -2,6 +2,9 @@ export { };
 import { Request, Response, NextFunction } from 'express';
 import { exec } from 'child_process';
 import fs = require('fs');
+import { app } from 'electron';
+import * as path from 'path';
+
 let portNo = 5001;
 let dockerPortNo = portNo;
 
@@ -87,16 +90,10 @@ dockerController.createDockerCompose = (req: Request, res: Response, next: NextF
   const { containerNameArray } = res.locals;
   let directory: string;
   let containerName: string;
-  const composeFilePath = `./myProjects/${projectFolder}/docker-compose.yaml`
+  const composeFilePath = path.join(app.getPath('userData'), `myProjects/${projectFolder}/docker-compose.yaml`)
   /* writeFile will create a new docker compose file each time the controller is run 
   so user can have leave-one-out functionality. Indentation is important in yaml files so it looks weird on purpose */
-  fs.writeFileSync(composeFilePath, `version: "3"\nservices:\n`,
-    (error: Error) => {
-      if (error) return next({
-        log: 'ERROR IN CREATING COMPOSE FILE ',
-        msg: { err: `ERROR: ${error}` }
-      })
-    })
+  fs.writeFileSync(composeFilePath, `version: "3"\nservices:\n`)
 
   // Taking the 'checked' repositories and storing each name into an array
   const { repos } = res.locals;
@@ -117,13 +114,7 @@ dockerController.createDockerCompose = (req: Request, res: Response, next: NextF
       dockerPortNo++;
       // appending the file with the configurations for each service
       fs.appendFileSync(composeFilePath,
-        `  ${containerName}:\n    build: "${directory}"\n    ports:\n      - ${portNo}:${dockerPortNo}\n`,
-        (error: Error) => {
-          if (error) return next({
-            log: "ERROR IN CREATEDOCKERCOMPOSE",
-            msg: { err: `error: ${error}` }
-          });
-        });
+        `  ${containerName}:\n    build: "${directory}"\n    ports:\n      - ${portNo}:${dockerPortNo}\n`);
     }
   }
   return next();

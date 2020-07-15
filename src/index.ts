@@ -95,41 +95,41 @@ app.on('activate', () => {
 });
 
 
-// Verify WebView Options Before Creation - from electron security docs - https://www.electronjs.org/docs/tutorial/security#11-verify-webview-options-before-creation
-app.on('web-contents-created', (event, contents) => {
-  contents.on('will-attach-webview', (event, webPreferences: WebPreferences & { preloadURL: string}, params) => {
-    // Strip away preload scripts if unused or verify their location is legitimate
-    delete webPreferences.preload;
-    delete webPreferences.preloadURL;
+// // Verify WebView Options Before Creation - from electron security docs - https://www.electronjs.org/docs/tutorial/security#11-verify-webview-options-before-creation
+// app.on('web-contents-created', (event, contents) => {
+//   contents.on('will-attach-webview', (event, webPreferences: WebPreferences & { preloadURL: string}, params) => {
+//     // Strip away preload scripts if unused or verify their location is legitimate
+//     delete webPreferences.preload;
+//     delete webPreferences.preloadURL;
 
-    // Disable Node.js integration
-    webPreferences.nodeIntegration = false;
+//     // Disable Node.js integration
+//     webPreferences.nodeIntegration = false;
 
-    // No URLS should be loaded
-    event.preventDefault();
+//     // No URLS should be loaded
+//     event.preventDefault();
     
-  })
-})
+//   })
+// })
 
-const URL = require('url').URL
+// const URL = require('url').URL
 
-// only allows navigation to our express server URL
-app.on('web-contents-created', (event, contents) => {
-  contents.on('will-navigate', (event, navigationUrl) => {
-    const parsedUrl = new URL(navigationUrl)
-    if (parsedUrl.origin !== EXPRESS_URL) {
-      event.preventDefault()
-    }
-  })
-})
+// // only allows navigation to our express server URL
+// app.on('web-contents-created', (event, contents) => {
+//   contents.on('will-navigate', (event, navigationUrl) => {
+//     const parsedUrl = new URL(navigationUrl)
+//     if (parsedUrl.origin !== EXPRESS_URL) {
+//       event.preventDefault()
+//     }
+//   })
+// })
 
-// doesnt allow new windows to be created
-app.on('web-contents-created', (event, contents) => {
-  contents.on('new-window', async (event, navigationUrl) => {
-    event.preventDefault()
-    await shell.openExternal(navigationUrl)
-  })
-})
+// // doesnt allow new windows to be created
+// app.on('web-contents-created', (event, contents) => {
+//   contents.on('new-window', async (event, navigationUrl) => {
+//     event.preventDefault()
+//     await shell.openExternal(navigationUrl)
+//   })
+// })
 
 
 

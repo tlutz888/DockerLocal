@@ -6,9 +6,10 @@ import SignIn from '../signIn/SignIn';
 import { User } from '../../../types/types';
 import { getUsernameAndToken } from "../../helpers/cookieClientHelper";
 
+
 const Routes: React.FC = (props) => {
   // hooks to define state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [rendered, setRendered] = useState(<SignIn />);
 
 

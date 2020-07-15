@@ -3,6 +3,8 @@ export {};
 import { Request, Response, NextFunction } from "express";
 const fetch = require("node-fetch").default;
 const fs = require("fs");
+import { app } from 'electron';
+import * as path from 'path';
 
 // import helper function to execute shell scripts
 const execShellCommand = require("./helpers/shellHelper");
@@ -22,8 +24,11 @@ sshKeyController.createSSHkey = async (
   // shell script adds the github.com domain name to the known_hosts file using the ssh-keyscan command
   // script then clones github repo using SSH connection
   const shellCommand = "./src/scripts/sshKeygen.sh";
+  const directory = app.getPath('home')
+  console.log('directory **** ', directory)
+
   
-  const shellResult = await execShellCommand(shellCommand, []);
+  const shellResult = await execShellCommand(shellCommand, [directory]);
   console.log('request')
   console.log(shellResult);
   console.log("Finished Generating a Key");
@@ -42,7 +47,7 @@ sshKeyController.addSSHkeyToGithub = async (
   const { accessToken, username } = res.locals;
 
   console.log("before read sshKey");
-  const sshKey = fs.readFileSync("./tmpKeys/dockerKey.pub", "utf8");
+  const sshKey = fs.readFileSync(path.join(app.getPath('home'), "tmpKeys/dockerKey.pub"), "utf8");
 
   // create the request body which we will use to create the ssh key on Github
   const reqBody = JSON.stringify({
@@ -83,8 +88,10 @@ sshKeyController.deleteSSHkey = async (
   const { accessToken, keyId } = res.locals;
 
   const shellCommand = "./src/scripts/sshKeyDelete.sh";
+  const directory = app.getPath('home')
+  console.log('directory **** ', directory)
 
-  await execShellCommand(shellCommand, []);
+  await execShellCommand(shellCommand, [directory]);
 
   const url = `https://api.github.com/user/keys/${keyId}`;
   const response = await fetch(url, {

@@ -1,12 +1,15 @@
 export {};
 
 import { Request, Response, NextFunction } from "express";
-import { Repo } from '../../types/types'
+import { Repo } from '../../types/types';
+import { app } from 'electron';
+import * as path from 'path';
+
 
 // import helper function to execute shell scripts
 const execShellCommand = require("./helpers/shellHelper");
 
-const gitController: any = {};
+const gitController: any = {};  
 
 /**
  * @middleware  Clone Github repositor(y/ies) using an SSH connection
@@ -21,6 +24,8 @@ gitController.cloneRepo = async (
 
   const { repos, projectName }: {repos: Repo[]; projectName: string} = res.locals;
   const shellCommand = "./src/scripts/cloneRepo.sh";
+  const directory = `${app.getPath('home')}/Library/Application\ Support/`;
+  console.log('route ****** ', directory)
 
   // make an array of promises to clone all selected repos
   const promises = repos.map(async (currentRepo) => {
@@ -32,6 +37,7 @@ gitController.cloneRepo = async (
       repoOwner,
       repoName,
       projectName,
+      directory
     ]);
     console.log("Finished Cloning Repo");
     return shellResp;

@@ -8,6 +8,7 @@ require("dotenv/config");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const electron = require('electron')
 
 // disables 'powered by express' header
 app.disable('x-powered-by')
@@ -41,7 +42,7 @@ app.use(express.static("assets"));
 
 // Home endpoint
 app.get("/", (req: Request, res: Response) =>
-  res.sendFile(path.resolve(__dirname, "../../src/index.html"))
+  res.sendFile(path.resolve(express.app.getAppPath(), "../../src/index.html"))
 );
 
 // Handle redirections

@@ -3,7 +3,7 @@ export { };
 require("dotenv").config();
 const passport = require("passport");
 const GithubStrategy = require("passport-github2");
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = process.env;
+const [ GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET ] = ['a', 'b']
 // Configure the Github strategy for use by Passport.
 
 // OAuth 2.0-based strategies require a `verify` function which receives the

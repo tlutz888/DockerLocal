@@ -1,7 +1,9 @@
 export { };
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { mkdir } from 'fs';
 const fs = require('fs');
 const path = require('path');
+const { app }  = require('electron')
 
 const configController: any = {};
 
@@ -10,7 +12,8 @@ configController.readJSONFromFile = async (req: Request, res: Response, next: Ne
   //Get JSON data from local file
   //save to res.locals.projects
 
-  const filePath = path.join(__dirname, '../../user-projects/projects.json');
+  const filePath = path.join(app.getPath('userData'), '/user-projects/projects.json');
+  console.log(filePath)
 
   await fs.readFile(filePath, 'utf8',
     (err: ErrorRequestHandler, data: JSON) => {
@@ -33,8 +36,13 @@ configController.writeJSONToFile = async (req: Request, res: Response, next: Nex
   //takes in json from req.body;
   //writes req.body JSON to local file
 
-  const filePath = path.join(__dirname, '../../user-projects/projects.json');
+  const filePath = path.join(app.getPath('userData'), 'user-projects/projects.json');
+  console.log(filePath)
 
+  if (!fs.existsSync(filePath)) {
+    fs.mkdirSync(path.join(app.getPath('userData'), 'user-projects/'))
+    console.log('The path doesnt exists.');
+  }
   await fs.writeFile(filePath, JSON.stringify(req.body),
     (err: ErrorRequestHandler) => {
       if (err) return next({
