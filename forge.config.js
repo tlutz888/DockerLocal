@@ -46,6 +46,7 @@ module.exports = {
     ],
     "hooks": {
       // creates a folder and stores shell scripts
+      // need to revert gitcontroller/execshellscript back to the way it was before now that the shell scripts are accessible
       generateAssets: async () => {
         console.log(homedir)
         fs.mkdirSync(path.join(homedir, 'DockerLocalFiles/scripts'), { recursive: true })
