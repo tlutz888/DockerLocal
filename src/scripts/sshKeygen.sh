@@ -1,10 +1,11 @@
 #!/bin/bash
 # Script to generate an SSH key and add github.com to known hosts
 
-directory=$1
+# directory=$1
 
-cd /
-cd directory
+# cd /
+# cd directory
+echo pwd
 # remove temporary folders that store agent info and ssh keys, if they exist
 if [ -d './tmpKeys' ]
 then
@@ -14,6 +15,7 @@ then
     rm -rf ./tmpAgent
 fi
 
+echo pwd
 # create temporary folders to store agent info and ssh keys
 mkdir tmpKeys
 mkdir tmpAgent

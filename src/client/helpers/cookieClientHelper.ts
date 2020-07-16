@@ -40,5 +40,5 @@ export const getUsernameAndToken = async (): Promise<{
   //   "super_secret"
   // ).toString(CryptoJS.enc.Utf8);
 
-  return { username: 'tlutz888', accessToken: 'ee0e3cfe06ee71ad84741ff30559d2715cea1be8' };
+  return { username: 'tlutz888', accessToken: 'b5c88556dfc047e026e3410911d18c7e7b5ecf65' };
 };

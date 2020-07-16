@@ -1,6 +1,6 @@
 export {};
 
-const exec = require("child_process").execFile;
+import { exec, ExecException } from 'child_process';
 
 /**
  * @function Executes a shell command and return it as a Promise.
@@ -9,12 +9,11 @@ const exec = require("child_process").execFile;
  * @return {Promise<string>}
  */
 
-function execShellCommand(shellCommand: string, args: string []): Promise<string> {
+function execShellCommand(shellCommand: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(
       shellCommand,
-      args,
-      (error: string, stdout: string, stderr: string) => {
+      (error: ExecException, stdout: string, stderr: string) => {
         if (error) {
           console.warn(error);
         }

@@ -5,13 +5,9 @@
 username=$1
 repoName=$2
 projectName=$3
-directory=$4
-
-cd /
-cd $4
 
 # get the sock address of our ssh agent so that we can connect to it
-temp_sock=$(cat tmpAgent/agentSock)
+temp_sock=$(cat ./tmpAgent/agentSock)
 # add the ssh agent sock to the environment variables
 export SSH_AUTH_SOCK=$temp_sock
 

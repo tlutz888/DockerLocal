@@ -41,9 +41,9 @@ app.use("/config", configRoute);
 app.use(express.static("assets"));
 
 // Home endpoint
-app.get("/", (req: Request, res: Response) =>
-  res.sendFile(path.resolve(express.app.getAppPath(), "../../src/index.html"))
-);
+// app.get("/", (req: Request, res: Response) =>
+//   res.sendFile(path.resolve(express.app.getAppPath(), "../../src/index.html"))
+// );
 
 // Handle redirections
 app.get("*", (req: Request, res: Response) => res.sendStatus(200));
